@@ -56,7 +56,6 @@ function App() {
       <img src="/normalized_supply_demand_ratios.png" alt="Normalized Supply Demand Ratios" />
       {[...Array(5).keys()].map(id => (
         <Account addr={accounts[id].Address} pk={accounts[id].PrivateKey} balance={balances[id]}/>
-        
       ))}
     </>
 
