@@ -14,7 +14,8 @@ async function main() {
     const provider = new ethers.JsonRpcProvider(process.env.ALCHEMY_URL);
     const wallet = new ethers.Wallet(process.env.PRIVATE_KEY, provider);
     const token = new ethers.Contract(tokenAddress, artifact.abi, wallet);
-    console.log('okay');
+    
+    await token.
 
 
 }
