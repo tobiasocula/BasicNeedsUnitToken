@@ -25,13 +25,13 @@ const accounts = [
 ]
 
 function App() {
-  
   return (
     <>
-      <img src='./public/raw_ratios.png'></img>
-      <img src='./public/normalized_supply_demand_ratios.png'></img>
+      <img src="/raw_ratios.png" alt="Raw Ratios" />
+      <img src="/normalized_supply_demand_ratios.png" alt="Normalized Supply Demand Ratios" />
     </>
-  )
+  );
 }
 
-export default App
+export default App;
+
