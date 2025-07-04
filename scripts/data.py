@@ -1,4 +1,11 @@
 
+"""
+This python file generates two graphs:
+One displaying the raw supply/demand ratios for different resources,
+and one displaying the total (normalized) ratios and the new supposed supply ratio
+The csv data got downloaded from https://data.worldbank.org/ and https://www.worldwater.org/water-data/.
+"""
+
 
 import pandas as pd
 import matplotlib.pyplot as plt

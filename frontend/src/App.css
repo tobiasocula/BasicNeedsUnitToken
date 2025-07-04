@@ -4,3 +4,140 @@
   padding: 2rem;
   text-align: center;
 }
+
+
+.main-content-section-1 {
+  display: flex;
+  gap: 10px;
+}
+
+.account-section {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 10px;
+}
+
+.account-container {
+  background-color: rgba(13, 13, 13, 0.5);
+  border-radius: 5px;
+  display: flex;
+  padding: 5px;
+}
+
+.demo-account {
+  width: 100px;
+  height: 100px;
+  padding: 5px;
+}
+
+.text1 {
+  font-weight: bold;
+}
+
+.account-text-element {
+  display: flex;
+  gap: 4px;
+}
+
+.basic-button {
+  background-color: rgb(0, 34, 255);
+  border: none;
+  color: white;
+  text-align: center;
+  width: 5rem;
+  height: 25px;
+  border-radius: 5px;
+}
+
+.input-text-field {
+  width: 15rem;
+  border: none;
+  height: 1.5rem;
+  border-radius: 5px;
+}
+
+.basic-button:hover {
+  background-color: rgb(68, 92, 247);
+}
+
+.token-container {
+  background-color: rgba(10, 15, 45, 0.8);
+  border-radius: 5px;
+  display: flex;
+  padding: 5px;
+}
+
+.image {
+  width: 30rem;
+  height: auto;
+}
+
+.images {
+  padding-top: 2rem;
+  display: flex;
+  gap: 10px;
+  justify-content: space-around;
+}
+
+.select-resource {
+  width: 4rem;
+  color: white;
+  height: 25px;
+  border: none;
+  background-color: rgba(1, 50, 16, 0.8);
+}
+
+.output-section {
+  padding-top: 20px;
+  background-color: rgb(31, 31, 31);
+  border-radius: 5px;
+  height: 23rem;
+  overflow-y: auto;
+  padding: 10px;
+}
+
+.input-divs-labels {
+  display: flex;
+  flex-direction: column;
+  
+  gap: 5px;
+}
+
+.input-divs {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 5px;
+}
+
+.input-div {
+  display: flex;
+  gap: 5px;
+}
+
+.input-panels {
+  display: flex;
+  gap: 10px;
+}
+
+.change-specific-sd-ratio {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 10px;
+}
+
+.input-div-label {
+  text-align: left;
+}
+
+.input-section {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.logging {
+  font-weight: bold;
+}

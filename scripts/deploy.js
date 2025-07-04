@@ -12,17 +12,17 @@ async function main() {
   const provider = new ethers.JsonRpcProvider(process.env.ALCHEMY_URL);
   const wallet = new ethers.Wallet(process.env.PRIVATE_KEY, provider);
 
-  const CostToken = new ethers.ContractFactory(artifact.abi, artifact.bytecode, wallet);
+  const Token = new ethers.ContractFactory(artifact.abi, artifact.bytecode, wallet);
 
   const balance = await wallet.provider.getBalance(wallet.address);
-  console.log("Deploying CostToken proxy...");
+  console.log("Deploying proxy...");
   console.log('Deploying from:', wallet.address);
   console.log('Balance:', ethers.formatEther(balance), 'ETH');
 
-  const costTokenProxy = await upgrades.deployProxy(CostToken, [], { initializer: 'initialize' });
+  const TokenProxt = await upgrades.deployProxy(Token, [], { initializer: 'initialize' });
   //await costTokenProxy.deployed();
 
-  console.log("CostToken deployed to:", await costTokenProxy.getAddress());
+  console.log("CostToken deployed to:", await TokenProxt.getAddress());
 }
 
 
