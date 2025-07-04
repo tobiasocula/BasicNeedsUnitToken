@@ -71,13 +71,25 @@
 .image {
   width: 30rem;
   height: auto;
+  padding: 10px;
 }
 
-.images {
+.image-text-field {
   padding-top: 2rem;
   display: flex;
+  flex-direction: column;
   gap: 10px;
   justify-content: space-around;
+  align-items: center;
+}
+
+.image-text-fields {
+  display: flex;
+  align-items: center;
+}
+
+.image-text {
+  height: 7rem;
 }
 
 .select-resource {
@@ -140,4 +152,8 @@
 
 .logging {
   font-weight: bold;
+}
+
+.text-fields {
+  display: flex;
 }

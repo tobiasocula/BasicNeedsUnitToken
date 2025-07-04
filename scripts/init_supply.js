@@ -11,7 +11,7 @@ const addresses = [
   ]
 
 async function main() {
-    const response = await fetch("https://get-balances-4.onrender.com/init-airdrop", {method: "POST",
+    const response = await fetch("https://get-balances.onrender.com/init-airdrop", {method: "POST",
                     headers: {
                         'Accept': 'application/json',
                         'Content-Type': 'application/json'

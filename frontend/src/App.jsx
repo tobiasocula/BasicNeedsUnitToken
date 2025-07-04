@@ -119,7 +119,7 @@ function App() {
       
       
       <div className='account-section'>
-        <h2 className='accounts-title'>Some demo accounts holding BNS Token</h2>
+        <h2 className='accounts-title'>Some demo accounts holding BNU Token</h2>
         {loadingBalances && (
           <h4 className='loading-balances'>Loading balances...</h4>
         )}
@@ -134,7 +134,7 @@ function App() {
             <div className='account-text-element'>
               <div className='text1'>Balance:</div>
               <div className='text2'>{parseInt(balances[id]) / 1000000000000000000}</div>
-              <div className='text2'>* 10^18 $BNS</div>
+              <div className='text2'>* 10^18 $BNU</div>
             </div>
           </div>
         </div>
@@ -162,6 +162,7 @@ function App() {
 
         <div className='input-section'>
           <h2 className='input-section-title'>Changing parameters & input variables</h2>
+          <div className='text'>Transactions might take some time (every transaction needs to get mined). Don't spam the submit button.</div>
 
           <div className='input-section-1'>
             <h4 className='input-section-1-title'>Example: Change supply of token (in new year, eg. 2024)</h4>
@@ -267,19 +268,21 @@ function App() {
       <h2 className='section-2-title'>Visualisation</h2>
       <h3 className='section-2-title-info'>This shows supply / demand ratios for three sample countries: the US, the UK and Canada</h3>
 
-    <div className='images'>
-      <div className='image-1'>
-        <h4 className='section-2-info'>This displays resource Supply / Demand ratios</h4>
-        <h5 className='section-2-info-2'>Meaning the total supply / total demand for a specific resource</h5>
+    <div className='image-text-fields'>
+
+      <div className='image-text-field'>
+        <div className='image-text'>This displays resource supply / demand ratios, meaning the total supply / total demand for a specific resource.</div>
         <img src='/raw_ratios.png' className='image'></img>
       </div>
-      <div className='image-2'>
-        <h4 className='section-2-info'>This displays the combined / normalized Supply / Demand ratio</h4>
-        <h5 className='section-2-info-2'>Meaning the total supply / total demand (combined)</h5>
-        <div className='extra-text'>{"A ratio of 1 means the supply should stay stable. A ratio of <1 means there should be some kind of burning (not yet implemented). A ratio of > 1 means the supply should increase."}</div>
+        
+      <div className='image-text-field'>
+        <div className='image-text'>{"This displays the combined / normalized supply / demand ratio, meaning the total supply / total demand (combined). A ratio of 1 means the supply should stay stable. A ratio of <1 means there should be some kind of burning (not yet implemented). A ratio of > 1 means the supply should increase"}.</div>
         <img src='/normalized_supply_demand_ratios.png' className='image'></img>
       </div>
+        
     </div>
+      
+    
 
     </div>
 
