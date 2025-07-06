@@ -5,12 +5,19 @@
 
   color-scheme: light dark;
   color: rgba(255, 255, 255, 0.87);
-  background-color: #242424;
+  /* background-color: #242424; */
+  --bg-image: url('../public/background.jpg');
 
   font-synthesis: none;
   text-rendering: optimizeLegibility;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+}
+
+
+
+.input-text-field {
+  background-color: rgba(28, 28, 28, 0.87);
 }
 
 a {
@@ -28,4 +35,9 @@ body {
   place-items: center;
   min-width: 320px;
   min-height: 100vh;
+
+  background-image: var(--bg-image);
+  background-repeat: repeat;
+  background-position: center;
+
 }

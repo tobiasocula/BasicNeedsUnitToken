@@ -2,22 +2,27 @@
 require('dotenv').config({ path: __dirname + '/../.env' });
 
 const { upgrades } = require("hardhat");
-const { ethers } = require("ethers");
+const hre = require("hardhat");
 
 const artifact = require('../artifacts/contracts/BasicNeedsUnitToken.sol/BasicNeedsUnitToken.json');
 
 
+
+
 async function main() {
-  const provider = new ethers.JsonRpcProvider(process.env.ALCHEMY_URL);
-  const wallet = new ethers.Wallet(process.env.PRIVATE_KEY, provider);
+  const provider = new hre.ethers.JsonRpcProvider(process.env.ALCHEMY_URL);
+  const wallet = new hre.ethers.Wallet(process.env.PRIVATE_KEY, provider);
 
   const Token = new ethers.ContractFactory(artifact.abi, artifact.bytecode, wallet);
 
   console.log("Deploying proxy...");
   console.log('Deploying from:', wallet.address);
 
-  const TokenProxy = await upgrades.deployProxy(Token, [], { initializer: 'initialize' });
-  //await costTokenProxy.deployed();
+  const TokenProxy = await upgrades.deployProxy(Token, [], {
+  initializer: 'initialize',
+  timeout: 600000,           // Wait up to 10 minutes (milliseconds)
+  pollingInterval: 5000      // Check every 5 seconds
+});
 
   console.log("Deployed to:", await TokenProxy.getAddress());
 }

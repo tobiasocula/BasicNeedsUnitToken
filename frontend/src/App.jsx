@@ -1,19 +1,20 @@
 import { useState } from 'react'
 import './App.css'
 import { useEffect } from 'react';
+import { getBalances, increaseSupply, rebase } from '../backend.js';
 
 function App() {
 
-  const tokenAddress = "0xb8b7Fd8003d0c975694F4c7A348a2946fEE4E33B";
+  const tokenAddress = "0xf7F47D4E7D1568c0863065bd07f7C197B4eD0Cca"; // proxy
 
-  const addresses = [
+  const addresses = [ // demo accounts
     "0x9966E7692817B333165c93111640Fe4E20988399",
     "0x8f552A85bf0F96E7c1e19BD1b768526DcD6d0D6b",
     "0x6D74324f37770f2672D712761B91C4b5e33642bD",
     "0x5f2668f4CBBaC071501CaC6c1d5bE0EEE1FB1aDd",
     "0x95f3C09092bD7831a839Ea3FD0558cEFbDc50416"
   ];
-  const privateKeys = [
+  const privateKeys = [ // not used here, these are the private keys of the above accounts
     "0x4447ac8e06c156b26952e3423de6b2a78347309c994a4673e986051ad1ecc8ab",
     "0x02b4ea317314aa917ba957f7b56a2d4c2ed0692961f8dafeaae856b0d8cd7b62",
     "0x3142ad05542a884f681bd4acbc4e91dbd64d05d0a1f2e71f8f37b4ae829c3be1",
@@ -30,83 +31,22 @@ function App() {
   const [loadingBalances, setLoadingBalances] = useState(false);
   const [logMessages, setLogMessages] = useState([]);
 
-  const fetchBalances = async () => {
-    setLoadingBalances(true);
-    setLogMessages(prev => [...prev, "Updating balances..."]);
-    console.log('trying to fetch');
-    const response = await fetch("https://get-balances.onrender.com/balances", {method: "POST",
-                    headers: {
-                        'Accept': 'application/json',
-                        'Content-Type': 'application/json'
-                        },
-                    body: JSON.stringify({ accounts: [...addresses, tokenAddress] })
-                });
-    console.log(response);
-    if (response.status === 200) {
-      const data = await response.json();
-      console.log('balances:', data.balances);
-      setBalances(data.balances.slice(0, data.balances.length-1));
-      setContractBalance(data.balances[data.balances.length-1]);
-    } else {
-      console.log('error:', response);
-    }
-    setLoadingBalances(false);
-    setLogMessages(prev => [...prev, "Updated balances"]);
-
-  }
-
-  const rebase = async (ratio) => {
-    setLogMessages(prev => [...prev, "Submitting ratio..."]);
-    try {
-      const response = await fetch("https://get-balances.onrender.com/rebase", {method: "POST",
-                      headers: {
-                          'Accept': 'application/json',
-                          'Content-Type': 'application/json'
-                          },
-                      body: JSON.stringify({ accounts: addresses, ratio: ratio })
-                  });
-      console.log(response);
-      if (response.status !== 200) {
-        const data = await response.json();
-        setLogMessages(prev => [...prev, `An error occured: ${data.error}`]);
-      } else {
-        setLogMessages(prev => [...prev, "Updated ratio"]);
-        fetchBalances();
-      }
-                } catch (e) {
-                  setLogMessages(prev => [...prev, `An error occured: ${e}`]);
-                }
-  }
-    
-  const addSupply = async (pct) => {
-    console.log('add supply called');
-    setLogMessages(prev => [...prev, "Submitting new supply..."]);
-    try {
-      const response = await fetch("https://get-balances.onrender.com/increase-supply", {method: "POST",
-                      headers: {
-                          'Accept': 'application/json',
-                          'Content-Type': 'application/json'
-                          },
-                      body: JSON.stringify({ accounts: addresses, pct: pct })
-                  });
-      console.log(response);
-      if (response.status !== 200) {
-        const data = await response.json();
-        setLogMessages(prev => [...prev, `An error occured: ${data.error}`]);
-      } else {
-        setLogMessages(prev => [...prev, `Supplied ${pct}% more tokens`, "Updating balances..."]);
-        fetchBalances();
-      }
-  } catch (e) {
-    setLogMessages(prev => [...prev, `An error occured: ${e}`]);
-  }
-}
-
-
-  
-
   useEffect(() => {
-    fetchBalances();
+    const FB = async () => {
+      setLogMessages(prev => [...prev, "Submitting new supply..."]);
+      setLoadingBalances(true);
+      setLogMessages(prev => [...prev, "Updating balances..."]);
+      const r = await getBalances();
+      setLogMessages(prev => [...prev, r.msg]);
+      if (r.status) {
+        setBalances(r.result.slice(0,r.result.length-1));
+        setContractBalance(r.result[r.result.length-1]);
+        setLogMessages(prev => [...prev, "Balances updated"]);
+      }
+      setLoadingBalances(false);
+    }
+    FB();
+    
   }, []);
 
   return (
@@ -167,11 +107,26 @@ function App() {
           <div className='input-section-1'>
             <h4 className='input-section-1-title'>Example: Change supply of token (in new year, eg. 2024)</h4>
             <h5 className='input-section-1-sub'>Specify gain in %</h5>
-        <form onSubmit={(e) => {
+        <form onSubmit={async (e) => {
           e.preventDefault();
-          addSupply(inputNewSupply);
+          setLogMessages(prev => [...prev, "Submitting new supply..."]);
+          const supplyRes = await increaseSupply(inputNewSupply);
+          setLogMessages(prev => [...prev, supplyRes.msg]);
+          if (supplyRes.status) {
+            setLogMessages(prev => [...prev, "Updated supply"]);
+            setLoadingBalances(true);
+            setLogMessages(prev => [...prev, "Updating balances..."]);
+            const r = await getBalances();
+            setLogMessages(prev => [...prev, r.msg]);
+            if (r.status) {
+              setBalances(r.result.slice(0,r.result.length-1));
+              setContractBalance(r.result[r.result.length-1]);
+              setLogMessages(prev => [...prev, "Balances updated"]);
+            }
+            setLoadingBalances(false);
+          }
         }}
-        className='change-supply'
+        className='form-class-input'
         name="form-name">
           <input className='input-text-field' type="text"
             value={inputNewSupply} onChange={(e) => {
@@ -185,11 +140,13 @@ function App() {
 
       <div className='input-section-2'>
             <h4 className='input-section-2-title'>Example: input new overall supply/demand ratio (in new year, eg. 2024)</h4>
-        <form onSubmit={(e) => {
+        <form onSubmit={async (e) => {
           e.preventDefault();
-          rebase(inputNewNormalizedSDRatio);
+          setLogMessages(prev => [...prev, "Submitting new ratio..."]); 
+          const r = await rebase(inputNewNormalizedSDRatio);
+          setLogMessages(prev => [...prev, r.msg]);
         }}
-        className='change-overall-sd-ratio'
+        className='form-class-input'
         name="form-name">
           <input className='input-text-field' type="text"
             value={inputNewNormalizedSDRatio} onChange={(e) => {
@@ -202,14 +159,25 @@ function App() {
 
       <div className='input-section-3'>
             <h4 className='input-section-3-title'>Example: Submit new resource-specific supply/demand ratio (in new year, eg. 2024)</h4>
-        <form onSubmit={(e) => {
+        <form onSubmit={async (e) => {
           e.preventDefault();
           let s = 0;
           inputNewSpecificSDRatios.forEach(item => s += parseFloat(item));
           const normalizedRatio = s / 5;
           //console.log('normalized ratio:', normalizedRatio);
           setLogMessages(prev => [...prev, `Rebasing with normalized ratio of ${normalizedRatio}`]);
-          rebase(normalizedRatio.toString());
+          const rr = await rebase(normalizedRatio.toString());
+          setLogMessages(prev => [...prev, rr.msg]);
+          setLoadingBalances(true);
+            setLogMessages(prev => [...prev, "Updating balances..."]);
+            const r = await getBalances();
+            setLogMessages(prev => [...prev, r.msg]);
+            if (r.status) {
+              setBalances(r.result.slice(0,r.result.length-1));
+              setContractBalance(r.result[r.result.length-1]);
+              setLogMessages(prev => [...prev, "Balances updated"]);
+            }
+            setLoadingBalances(false);
         }}
         className='change-specific-sd-ratio'
         name="form-name">

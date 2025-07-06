@@ -27,7 +27,7 @@ contract BasicNeedsUnitToken is ERC20Upgradeable, UUPSUpgradeable, OwnableUpgrad
     }
 
     function initialize() public initializer {
-        __ERC20_init("CostToken", "COLT");
+        __ERC20_init("BasicNeedsUnitToken", "BNU");
         __Ownable_init(msg.sender);
         _mint(msg.sender, 1000 * 1e18);
         ownBalance = 0;
