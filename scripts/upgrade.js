@@ -3,7 +3,7 @@ require("dotenv").config({ path: __dirname + "/../.env" });
 const { ethers, upgrades } = require("hardhat");
 
 async function main() {
-  const proxyAddress = "0xd0994625782155Fe371E8749696001E3c57eEdfe";
+  const proxyAddress = "0xf7F47D4E7D1568c0863065bd07f7C197B4eD0Cca";
 
   const Token = await ethers.getContractFactory("BasicNeedsUnitToken");
 
