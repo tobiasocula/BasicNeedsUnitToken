@@ -229,13 +229,22 @@ def elec():
         'Total Elec Supply': total_elec_supply
     }
 
+def ratios(p, w, e):
+    return {
+
+    }
+
 
 @app.post("/newvalues")
 def newvalues():
+    p = protein()
+    w = water()
+    e = elec()
     return {
-        'Protein': protein(),
-        'Water': water(),
-        'Electricity': elec()
+        'Protein': p,
+        'Water': w,
+        'Electricity': e,
+        'Ratios': ratios(p, w, e)
     }
     
 

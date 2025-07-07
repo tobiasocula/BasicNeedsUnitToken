@@ -88,28 +88,6 @@ function App() {
     'Total Protein Demand': Array(6).fill(30_000),
     'Total Protein Supply': Array(6).fill(30_000),
   });
-  const [simulationGridFat, setSimulationGridFat] = useState({
-    'Year': range(2024, 2029),
-    'US Fat Demand': Array(6).fill(10_000),
-    'US Fat Supply': Array(6).fill(10_000),
-    'UK Fat Demand': Array(6).fill(10_000),
-    'UK Fat Supply': Array(6).fill(10_000),
-    'CAN Fat Demand': Array(6).fill(10_000),
-    'CAN Fat Supply': Array(6).fill(10_000),
-    'Total Fat Demand': Array(6).fill(30_000),
-    'Total Fat Supply': Array(6).fill(30_000),
-  });
-  const [simulationGridKcal, setSimulationGridKcal] = useState({
-    'Year': range(2024, 2029),
-    'US Kcal (Energy) Demand': Array(6).fill(10_000),
-    'US Kcal (Energy) Supply': Array(6).fill(10_000),
-    'UK Kcal (Energy) Demand': Array(6).fill(10_000),
-    'UK Kcal (Energy) Supply': Array(6).fill(10_000),
-    'CAN Kcal (Energy) Demand': Array(6).fill(10_000),
-    'CAN Kcal (Energy) Supply': Array(6).fill(10_000),
-    'Total Kcal (Energy) Demand': Array(6).fill(30_000),
-    'Total Kcal (Energy) Supply': Array(6).fill(30_000),
-  });
   const [simulationGridTotal, setSimulationGridTotal] = useState({
     'Year': range(2024, 2029),
     'Electricity Ratios': Array(6).fill(1),
@@ -268,6 +246,39 @@ function App() {
           'Total Electricity Demand': res.val['Electricity']['Total Elec Demand'],
           'Total Electricity Supply': res.val['Electricity']['Total Elec Supply'],
         });
+        setSimulationGridWater({
+          'Year': range(2024, 2029),
+          'US Water Demand': res.val['Water']['US Water Demand'],
+          'US Water Supply': res.val['Water']['US Water Supply'],
+          'UK Water Demand': res.val['Water']['UK Water Demand'],
+          'UK Water Supply': res.val['Water']['UK Water Supply'],
+          'CAN Water Demand': res.val['Water']['CAN Water Demand'],
+          'CAN Water Supply': res.val['Water']['CAN Water Supply'],
+          'Total Water Demand': res.val['Water']['Total Water Demand'],
+          'Total Water Supply': res.val['Water']['Total Water Supply'],
+        });
+        setSimulationGridProtein({
+          'Year': range(2024, 2029),
+          'US Protein Demand': res.val['Protein']['US Protein Demand'],
+          'US Protein Supply': res.val['Protein']['US Protein Supply'],
+          'UK Protein Demand': res.val['Protein']['UK Protein Demand'],
+          'UK Protein Supply': res.val['Protein']['UK Protein Supply'],
+          'CAN Protein Demand': res.val['Protein']['CAN Protein Demand'],
+          'CAN Protein Supply': res.val['Protein']['CAN Protein Supply'],
+          'Total Protein Demand': res.val['Protein']['Total Protein Demand'],
+          'Total Protein Supply': res.val['Protein']['Total Protein Supply'],
+        });
+        setSimulationGridTotal({
+          'Year': range(2024, 2029),
+          'US Water Demand': res.val['Water']['US Water Demand'],
+          'US Water Supply': res.val['Water']['US Water Supply'],
+          'UK Water Demand': res.val['Water']['UK Water Demand'],
+          'UK Water Supply': res.val['Water']['UK Water Supply'],
+          'CAN Water Demand': res.val['Water']['CAN Water Demand'],
+          'CAN Water Supply': res.val['Water']['CAN Water Supply'],
+          'Total Water Demand': res.val['Water']['Total Water Demand'],
+          'Total Water Supply': res.val['Water']['Total Water Supply'],
+        });
 
       }} className="basic-button">New</button>
       <div className='table-section'>
@@ -283,14 +294,6 @@ function App() {
         <SimulationGridTable simulationGrid={simulationGridProtein} />
       </div>
       <div className='table-section'>
-        Fat (in food) supply & demand
-        <SimulationGridTable simulationGrid={simulationGridFat} />
-      </div>
-      <div className='table-section'>
-        Kcal (food energy) supply & demand
-        <SimulationGridTable simulationGrid={simulationGridKcal} />
-      </div>
-      <div className='table-section'>
         {"Supply & Demand ratios (>1 means supply > demand, <1 means supply < demand)"}
         <SimulationGridTable simulationGrid={simulationGridTotal} />
       </div>
@@ -300,8 +303,6 @@ function App() {
           simulationGridElec,
           simulationGridWater,
           simulationGridProtein,
-          simulationGridFat,
-          simulationGridKcal,
           simulationGridTotal,
         ]);
         console.log('result:'); console.log(res);
