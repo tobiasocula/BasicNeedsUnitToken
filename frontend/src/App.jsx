@@ -305,7 +305,7 @@ function App() {
           simulationGridTotal,
         ]);
         console.log('result:'); console.log(res);
-        setRawRatiosImg(res.val);
+        setRawRatiosImg(res.val.image);
 
 
       }}>Create graph</button>
@@ -343,7 +343,7 @@ function App() {
 
       <div className='image-text-fields'>
 
-        {rawRatiosImg && combinedRatiosImg ? (
+        {rawRatiosImg ? (
           <>
             <div className='data-img'>
           <div className='image-text'>This displays resource supply / demand ratios, meaning the total supply / total demand for a specific resource.</div>

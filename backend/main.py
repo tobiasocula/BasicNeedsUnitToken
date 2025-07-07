@@ -98,13 +98,25 @@ def newvalues():
 class Generate(BaseModel):
     values: list
 
-@app.post("/generate")
-def generate(query: Generate):
-    values = query.values
+
+def generate_raw(values):
     fig, ax = plt.subplots()
-    ax.plot([1, 2, 3], [4, 5, 6])
+    # plotting
+    for vallist in values:
+        ax.plot(range(2024, 2030), )
+
     buf = io.BytesIO()
     fig.savefig(buf, format='png')
     plt.close(fig)
     base64_img = base64.b64encode(buf.getvalue()).decode('utf-8')
-    return {"image": f"data:image/png;base64,{base64_img}"}
+    return f"data:image/png;base64,{base64_img}"
+
+def generate_combined(values):
+    pass
+
+@app.post("/generate")
+def generate(query: Generate):
+    return {'data': query.values}
+    
+    return {"image1": generate_raw(query.values),
+            "image2": generate_combined(query.values)}
