@@ -102,8 +102,12 @@ class Generate(BaseModel):
 def generate_raw(values):
     fig, ax = plt.subplots()
     # plotting
-    for vallist in values:
-        ax.plot(range(2024, 2030), )
+    ratios = values[-1] # is a dict
+    ax.plot(ratios['Year'], ratios['Electricity Ratios'])
+    ax.plot(ratios['Year'], ratios['Fat Ratios'])
+    ax.plot(ratios['Year'], ratios['Kcal (Energy) Ratios'])
+    ax.plot(ratios['Year'], ratios['Protein Ratios'])
+    ax.plot(ratios['Year'], ratios['Water Ratios'])
 
     buf = io.BytesIO()
     fig.savefig(buf, format='png')
@@ -116,7 +120,8 @@ def generate_combined(values):
 
 @app.post("/generate")
 def generate(query: Generate):
-    return {'data': query.values}
+    # query.values: array
+    # query.values[i]: {"Year": Array, "US Electricity Demand": Array, ...}
     
     return {"image1": generate_raw(query.values),
             "image2": generate_combined(query.values)}
