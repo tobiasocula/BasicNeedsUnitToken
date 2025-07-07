@@ -4,6 +4,8 @@ from pydantic import BaseModel
 import pandas as pd
 import numpy as np
 import matplotlib.pyplot as plt
+import io
+import base64
 
 population_US = 340_000_000
 population_UK = 68_000_000
@@ -99,4 +101,10 @@ class Generate(BaseModel):
 @app.post("/generate")
 def generate(query: Generate):
     values = query.values
-    return {'result': values}
+    fig, ax = plt.subplots()
+    ax.plot([1, 2, 3], [4, 5, 6])
+    buf = io.BytesIO()
+    fig.savefig(buf, format='png')
+    plt.close(fig)
+    base64_img = base64.b64encode(buf.getvalue()).decode('utf-8')
+    return {"image": f"data:image/png;base64,{base64_img}"}

@@ -125,7 +125,7 @@ export async function createGraph(values) {
   )
   if (response.status === 200) {
     console.log('succes calling generate');
-    return {msg: 'Generated graphs', val: response.result}
+    return {msg: 'Generated graphs', val: await response.json()}
   }
 }
 

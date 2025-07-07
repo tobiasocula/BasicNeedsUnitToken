@@ -305,7 +305,8 @@ function App() {
           simulationGridTotal,
         ]);
         console.log('result:'); console.log(res);
-        
+        setRawRatiosImg(res.val);
+
 
       }}>Create graph</button>
     
