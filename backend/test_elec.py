@@ -1,5 +1,6 @@
 import pandas as pd
 import numpy as np
+import sys
 
 population_US = 340_000_000
 population_UK = 68_000_000
@@ -58,12 +59,15 @@ supply = pd.concat([supply, df2], axis=1)
 for y in range(1985, 2028):
     supply[y] *= 1e9
 
-print('supply:'); print(supply); print('demand:'); print(demand)
+
 supply.rename({
     'United States': 'US Supply',
     'United Kingdom': 'UK Supply',
     'Canada': 'CAN Supply'
     }, inplace=True)
+supply.columns = supply.columns.astype(str)
+
+
 demand.rename({
     'United States': 'US Demand',
     'United Kingdom': 'UK Demand',
@@ -71,5 +75,7 @@ demand.rename({
     }, inplace=True)
 
 final = pd.concat([supply, demand], axis=0)
-print()
-print(final)
+# print()
+# print(final)
+
+print(supply)

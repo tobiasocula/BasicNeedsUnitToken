@@ -98,3 +98,18 @@ export async function getBalances() {
 }
 
 
+export async function changeSimulationParams() {
+  const params = {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+  }
+  const response = await fetch('https://basic-needs-unit-token-zc3p.vercel.app/newvalues/',
+    params=params
+  )
+  if (response.status === 200) {
+    console.log('succes!');
+    return {msg: 'Changed simulation values', val: await response.json()}
+  }
+}
+
+

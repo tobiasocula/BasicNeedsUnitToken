@@ -1,7 +1,37 @@
 import { useState } from 'react'
 import './App.css'
 import { useEffect } from 'react';
-import { getBalances, increaseSupply, rebase } from '../backend.js';
+import { getBalances, increaseSupply, rebase, changeSimulationParams } from '../backend.js';
+
+const range = (start, end) => Array.from({ length: end - start + 1 }, (_, i) => start + i);
+
+
+function SimulationGridTable({ simulationGrid }) {
+  // Extract column headers and rows
+  const headers = Object.keys(simulationGrid);
+  const numRows = simulationGrid['Year'].length;
+
+  return (
+    <table className='table'>
+      <thead>
+        <tr className='tr'>
+          {headers.map(header => (
+            <th key={header}>{header}</th>
+          ))}
+        </tr>
+      </thead>
+      <tbody>
+        {Array.from({ length: numRows }).map((_, rowIdx) => (
+          <tr key={rowIdx}>
+            {headers.map(header => (
+              <td className='td' key={header}>{simulationGrid[header][rowIdx]}</td>
+            ))}
+          </tr>
+        ))}
+      </tbody>
+    </table>
+  );
+}
 
 function App() {
 
@@ -21,12 +51,39 @@ function App() {
     "0xa5554a87cd30ed7789330cd47434b6ccda62821a7bce768e30771f6deb30ef8f",
     "0x752f1f9dbaeaaa41684c656f6ed5e26518d677f57ac40381a971668705077c35"
   ];
+
+  const [simulationGridElec, setSimulationGridElec] = useState({
+    'Year': range(2024, 2029),
+    'US Elec Demand': Array(6).fill(10_000),
+    'US Elec Supply': Array(6).fill(10_000),
+    'UK Elec Demand': Array(6).fill(10_000),
+    'UK Elec Supply': Array(6).fill(10_000),
+    'CAN Elec Demand': Array(6).fill(10_000),
+    'CAN Elec Supply': Array(6).fill(10_000),
+    'Total Elec Demand': Array(6).fill(30_000),
+    'Total Elec Supply': Array(6).fill(30_000),
+  });
+  const [simulationGridWater, setSimulationGridWater] = useState({
+    'Year': range(2024, 2029),
+    'US Elec Demand': Array(6).fill(10_000),
+    'US Elec Supply': Array(6).fill(10_000),
+    'UK Elec Demand': Array(6).fill(10_000),
+    'UK Elec Supply': Array(6).fill(10_000),
+    'CAN Elec Demand': Array(6).fill(10_000),
+    'CAN Elec Supply': Array(6).fill(10_000),
+    'Total Elec Demand': Array(6).fill(30_000),
+    'Total Elec Supply': Array(6).fill(30_000),
+  });
+  const [simulationGridTotal, setSimulationGridTotal] = useState({
+    'Year': range(2024, 2029),
+    'Ratios': Array(6).fill(1)
+  });
+  
+
   const [balances, setBalances] = useState([0, 0, 0, 0, 0]);
   const [contractBalance, setContractBalance] = useState(0);
 
   const [inputNewSupply, setInputNewSupply] = useState("");
-  const [inputNewNormalizedSDRatio, setInputNewNormalizedSDRatio] = useState("");
-  const [inputNewSpecificSDRatios, setInputNewSpecificSDRatios] = useState(["", "", "", "", ""]);
 
   const [loadingBalances, setLoadingBalances] = useState(false);
   const [logMessages, setLogMessages] = useState([]);
@@ -101,11 +158,11 @@ function App() {
 
 
         <div className='input-section'>
-          <h2 className='input-section-title'>Changing parameters & input variables</h2>
+          <h2 className='input-section-title'>Change total supply of token</h2>
           <div className='text'>Transactions might take some time (every transaction needs to get mined). Don't spam the submit button.</div>
 
           <div className='input-section-1'>
-            <h4 className='input-section-1-title'>Example: Change supply of token (in new year, eg. 2024)</h4>
+          
             <h5 className='input-section-1-sub'>Specify gain in %</h5>
         <form onSubmit={async (e) => {
           e.preventDefault();
@@ -138,83 +195,6 @@ function App() {
         </form>
       </div>
 
-      <div className='input-section-2'>
-            <h4 className='input-section-2-title'>Example: input new overall supply/demand ratio (in new year, eg. 2024)</h4>
-        <form onSubmit={async (e) => {
-          e.preventDefault();
-          setLogMessages(prev => [...prev, "Submitting new ratio..."]); 
-          const r = await rebase(inputNewNormalizedSDRatio);
-          setLogMessages(prev => [...prev, r.msg]);
-        }}
-        className='form-class-input'
-        name="form-name">
-          <input className='input-text-field' type="text"
-            value={inputNewNormalizedSDRatio} onChange={(e) => {
-              e.preventDefault();
-              setInputNewNormalizedSDRatio(e.target.value);
-            }} placeholder='Input new sample SD ratio'/>
-          <button type="submit" className='basic-button'>Submit</button>
-        </form>
-      </div>
-
-      <div className='input-section-3'>
-            <h4 className='input-section-3-title'>Example: Submit new resource-specific supply/demand ratio (in new year, eg. 2024)</h4>
-        <form onSubmit={async (e) => {
-          e.preventDefault();
-          let s = 0;
-          inputNewSpecificSDRatios.forEach(item => s += parseFloat(item));
-          const normalizedRatio = s / 5;
-          //console.log('normalized ratio:', normalizedRatio);
-          setLogMessages(prev => [...prev, `Rebasing with normalized ratio of ${normalizedRatio}`]);
-          const rr = await rebase(normalizedRatio.toString());
-          setLogMessages(prev => [...prev, rr.msg]);
-          setLoadingBalances(true);
-            setLogMessages(prev => [...prev, "Updating balances..."]);
-            const r = await getBalances();
-            setLogMessages(prev => [...prev, r.msg]);
-            if (r.status) {
-              setBalances(r.result.slice(0,r.result.length-1));
-              setContractBalance(r.result[r.result.length-1]);
-              setLogMessages(prev => [...prev, "Balances updated"]);
-            }
-            setLoadingBalances(false);
-        }}
-        className='change-specific-sd-ratio'
-        name="form-name">
-          
-        <div className='input-panels'>
-
-          <div className='input-divs-labels'>
-            <div className='input-div-label'>Protein: </div>
-            <div className='input-div-label'>Energy (kcal): </div>
-            <div className='input-div-label'>Fat: </div>
-            <div className='input-div-label'>Electricity: </div>
-            <div className='input-div-label'>Water: </div>
-          </div>
-
-          <div className='input-divs'>
-            {[...Array(5).keys()].map(id => (
-              <input className='input-text-field' type="text" key={id}
-            value={inputNewSpecificSDRatios[id]} onChange={(e) => {
-              e.preventDefault();
-              //console.log(`old: ${inputNewSpecificSDRatios}`);
-              setInputNewSpecificSDRatios(prev => [
-                ...prev.slice(0, id),
-                e.target.value,
-                ...prev.slice(id + 1)
-              ]);
-              
-            }} placeholder='Input new sample SD ratio'/>
-            ))}
-
-          </div>
-
-          </div>
-
-          <button type="submit" className='basic-button'>Submit</button>
-        </form>
-      </div>
-
       <div className='output-section'>
         <div className='logging'>Logs will appear here</div>
         
@@ -223,15 +203,27 @@ function App() {
       </div>
 
       </div>
-
-      
-      
-
-
-
     </div>
 
     <div className='main-content-section-2'>
+      <h2>Simulate future resource supply / demand</h2>
+      <div className='text'>
+        The goal of this section is to show how the supply and demand of certain goods in a few countries would affect the token supply.
+      </div>
+      <div className='text'>
+        Press the button to generate a simulation of how the supply and demand might evolve in the future.
+      </div>
+      <button type="button" onClick={async () => {
+        const res = await changeSimulationParams()
+        console.log('result:'); console.log(res);
+      }} className="basic-button">New</button>
+      <SimulationGridTable simulationGrid={simulationGridElec} />
+      <SimulationGridTable simulationGrid={simulationGridWater} />
+      <SimulationGridTable simulationGrid={simulationGridTotal} />
+            
+    </div>
+
+    <div className='main-content-section-3'>
 
       <h2 className='section-2-title'>Visualisation</h2>
       <h3 className='section-2-title-info'>This shows supply / demand ratios for three sample countries: the US, the UK and Canada</h3>
