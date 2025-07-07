@@ -11,7 +11,7 @@ import pandas as pd
 import matplotlib.pyplot as plt
 import numpy as np
 
-df = pd.read_csv('./sample_kcal_fat_protein_data.csv')
+df = pd.read_csv('../backend/sample_kcal_fat_protein_data.csv')
 
 population_US = 340_000_000
 population_UK = 68_000_000
@@ -62,9 +62,9 @@ ax.plot(range(2010, 2023), y_kcal, label='Calories')
 
 y_elec = []
 
-demand = pd.read_csv('./electricity_sample_data.csv') # kWh per capita per year
+demand = pd.read_csv('../backend/electricity_sample_data.csv') # kWh per capita per year
 demand = demand[demand['Country Name'].isin(['United States', 'United Kingdom', 'Canada'])]
-supply = pd.read_csv('./elec-fossil-nuclear-renewables.csv')
+supply = pd.read_csv('../backend/elec-fossil-nuclear-renewables.csv')
 supply = supply[supply['Entity'].isin(['United States', 'United Kingdom', 'Canada'])]
 for y in range(2010, 2023):
     d = (
@@ -96,7 +96,7 @@ ax.plot(range(2010, 2023), y_elec, label='Electricity')
 # water data
 
 y_water = []
-water = pd.read_csv('./water_sample_data.csv')
+water = pd.read_csv('../backend/water_sample_data.csv')
 for y in range(2010, 2022):
     index = y - 2006
     d = (
@@ -145,5 +145,5 @@ for v in range(5):
 ax.set_xlabel("Year")
 ax.set_ylabel("Normalized ratios")
 ax.legend()
+plt.show()
 plt.savefig('normalized supply & ratios')
-    

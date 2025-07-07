@@ -5,6 +5,11 @@
   text-align: center;
 }
 
+.main-content {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
 
 .main-content-section-1 {
   display: flex;
@@ -79,6 +84,17 @@
   border: none;
   height: 1.5rem;
   border-radius: 5px;
+}
+
+.basic-button2 {
+  background-color: rgb(0, 34, 255);
+  border: none;
+  color: white;
+  text-align: center;
+  width: 8rem;
+  height: 50px;
+  border-radius: 5px;
+  font-weight: bold;
 }
 
 .basic-button:hover {

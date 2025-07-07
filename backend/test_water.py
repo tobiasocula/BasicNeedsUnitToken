@@ -2,6 +2,8 @@ import pandas as pd
 import numpy as np
 import sys
 
+# test file
+
 def get_type(series_name):
     if series_name[0] == 'A':
         return "demand"

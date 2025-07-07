@@ -60,6 +60,7 @@ try {
 
   const supply = await contract.totalSupply(); // BigInt
   const extraSupply = (supply * pct) / BigInt(10000); // divide by 10000 instead of 100 to support decimal %
+  console.log('extrasupply:', extraSupply);
   const mintPerAccount = extraSupply / BigInt(accounts.length + 1);
 
 
@@ -98,35 +99,25 @@ export async function getBalances() {
 }
 
 
+//const pythonBackend = "https://basic-needs-unit-token-zc3p.vercel.app/";
+const pythonBackend = "http://127.0.0.1:8000"
+
 export async function changeSimulationParams() {
+  try {
   const params = {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
   }
-  const response = await fetch('https://basic-needs-unit-token-zc3p.vercel.app/newvalues/',
+  const response = await fetch(`${pythonBackend}/newvalues`,
     params
   )
   if (response.status === 200) {
     console.log('succes!');
-    return {msg: 'Changed simulation values', val: await response.json()}
+    return {msg: 'Changed simulation values', val: await response.json(), status: true}
   }
+} catch(e) {
+  return {msg: `An error occured: ${e}`, status: false}
 }
-
-export async function createGraph(values) {
-  const params = {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({
-              values: values 
-            })
-  }
-  const response = await fetch('https://basic-needs-unit-token-zc3p.vercel.app/generate/',
-    params
-  )
-  if (response.status === 200) {
-    console.log('succes calling generate');
-    return {msg: 'Generated graphs', val: await response.json()}
-  }
 }
 
 
