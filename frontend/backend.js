@@ -104,11 +104,28 @@ export async function changeSimulationParams() {
             headers: { 'Content-Type': 'application/json' },
   }
   const response = await fetch('https://basic-needs-unit-token-zc3p.vercel.app/newvalues/',
-    params=params
+    params
   )
   if (response.status === 200) {
     console.log('succes!');
     return {msg: 'Changed simulation values', val: await response.json()}
+  }
+}
+
+export async function createGraph(values) {
+  const params = {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({
+              values: values 
+            })
+  }
+  const response = await fetch('https://basic-needs-unit-token-zc3p.vercel.app/generate/',
+    params
+  )
+  if (response.status === 200) {
+    console.log('succes calling generate');
+    return {msg: 'Generated graphs', val: response.result}
   }
 }
 

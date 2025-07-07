@@ -1,7 +1,7 @@
 import { useState } from 'react'
 import './App.css'
 import { useEffect } from 'react';
-import { getBalances, increaseSupply, rebase, changeSimulationParams } from '../backend.js';
+import { getBalances, increaseSupply, changeSimulationParams, createGraph } from '../backend.js';
 
 const range = (start, end) => Array.from({ length: end - start + 1 }, (_, i) => start + i);
 
@@ -52,31 +52,72 @@ function App() {
     "0x752f1f9dbaeaaa41684c656f6ed5e26518d677f57ac40381a971668705077c35"
   ];
 
+  const [rawRatiosImg, setRawRatiosImg] = useState(null);
+  const [combinedRatiosImg, setCombinedRatiosImg] = useState(null);
+
   const [simulationGridElec, setSimulationGridElec] = useState({
     'Year': range(2024, 2029),
-    'US Elec Demand': Array(6).fill(10_000),
-    'US Elec Supply': Array(6).fill(10_000),
-    'UK Elec Demand': Array(6).fill(10_000),
-    'UK Elec Supply': Array(6).fill(10_000),
-    'CAN Elec Demand': Array(6).fill(10_000),
-    'CAN Elec Supply': Array(6).fill(10_000),
-    'Total Elec Demand': Array(6).fill(30_000),
-    'Total Elec Supply': Array(6).fill(30_000),
+    'US Electricity Demand': Array(6).fill(10_000),
+    'US Electricity Supply': Array(6).fill(10_000),
+    'UK Electricity Demand': Array(6).fill(10_000),
+    'UK Electricity Supply': Array(6).fill(10_000),
+    'CAN Electricity Demand': Array(6).fill(10_000),
+    'CAN Electricity Supply': Array(6).fill(10_000),
+    'Total Electricity Demand': Array(6).fill(30_000),
+    'Total Electricity Supply': Array(6).fill(30_000),
   });
   const [simulationGridWater, setSimulationGridWater] = useState({
     'Year': range(2024, 2029),
-    'US Elec Demand': Array(6).fill(10_000),
-    'US Elec Supply': Array(6).fill(10_000),
-    'UK Elec Demand': Array(6).fill(10_000),
-    'UK Elec Supply': Array(6).fill(10_000),
-    'CAN Elec Demand': Array(6).fill(10_000),
-    'CAN Elec Supply': Array(6).fill(10_000),
-    'Total Elec Demand': Array(6).fill(30_000),
-    'Total Elec Supply': Array(6).fill(30_000),
+    'US Water Demand': Array(6).fill(10_000),
+    'US Water Supply': Array(6).fill(10_000),
+    'UK Water Demand': Array(6).fill(10_000),
+    'UK Water Supply': Array(6).fill(10_000),
+    'CAN Water Demand': Array(6).fill(10_000),
+    'CAN Water Supply': Array(6).fill(10_000),
+    'Total Water Demand': Array(6).fill(30_000),
+    'Total Water Supply': Array(6).fill(30_000),
+  });
+  const [simulationGridProtein, setSimulationGridProtein] = useState({
+    'Year': range(2024, 2029),
+    'US Protein Demand': Array(6).fill(10_000),
+    'US Protein Supply': Array(6).fill(10_000),
+    'UK Protein Demand': Array(6).fill(10_000),
+    'UK Protein Supply': Array(6).fill(10_000),
+    'CAN Protein Demand': Array(6).fill(10_000),
+    'CAN Protein Supply': Array(6).fill(10_000),
+    'Total Protein Demand': Array(6).fill(30_000),
+    'Total Protein Supply': Array(6).fill(30_000),
+  });
+  const [simulationGridFat, setSimulationGridFat] = useState({
+    'Year': range(2024, 2029),
+    'US Fat Demand': Array(6).fill(10_000),
+    'US Fat Supply': Array(6).fill(10_000),
+    'UK Fat Demand': Array(6).fill(10_000),
+    'UK Fat Supply': Array(6).fill(10_000),
+    'CAN Fat Demand': Array(6).fill(10_000),
+    'CAN Fat Supply': Array(6).fill(10_000),
+    'Total Fat Demand': Array(6).fill(30_000),
+    'Total Fat Supply': Array(6).fill(30_000),
+  });
+  const [simulationGridKcal, setSimulationGridKcal] = useState({
+    'Year': range(2024, 2029),
+    'US Kcal (Energy) Demand': Array(6).fill(10_000),
+    'US Kcal (Energy) Supply': Array(6).fill(10_000),
+    'UK Kcal (Energy) Demand': Array(6).fill(10_000),
+    'UK Kcal (Energy) Supply': Array(6).fill(10_000),
+    'CAN Kcal (Energy) Demand': Array(6).fill(10_000),
+    'CAN Kcal (Energy) Supply': Array(6).fill(10_000),
+    'Total Kcal (Energy) Demand': Array(6).fill(30_000),
+    'Total Kcal (Energy) Supply': Array(6).fill(30_000),
   });
   const [simulationGridTotal, setSimulationGridTotal] = useState({
     'Year': range(2024, 2029),
-    'Ratios': Array(6).fill(1)
+    'Electricity Ratios': Array(6).fill(1),
+    'Water Ratios': Array(6).fill(1),
+    'Protein Ratios': Array(6).fill(1),
+    'Fat Ratios': Array(6).fill(1),
+    'Kcal (Energy) Ratios': Array(6).fill(1),
+    'Total Ratios': Array(6).fill(1)
   });
   
 
@@ -211,22 +252,70 @@ function App() {
         The goal of this section is to show how the supply and demand of certain goods in a few countries would affect the token supply.
       </div>
       <div className='text'>
-        Press the button to generate a simulation of how the supply and demand might evolve in the future.
+        Press the button to generate a simulation of how the supply and demand might evolve in the future (randomly generated).
       </div>
       <button type="button" onClick={async () => {
         const res = await changeSimulationParams()
         console.log('result:'); console.log(res);
+        setSimulationGridElec({
+          'Year': range(2024, 2029),
+          'US Electricity Demand': res.val['US Elec Demand'],
+          'US Electricity Supply': res.val['US Elec Supply'],
+          'UK Electricity Demand': res.val['UK Elec Demand'],
+          'UK Electricity Supply': res.val['UK Elec Supply'],
+          'CAN Electricity Demand': res.val['CAN Elec Demand'],
+          'CAN Electricity Supply': res.val['CAN Elec Supply'],
+          'Total Electricity Demand': res.val['Total Elec Demand'],
+          'Total Electricity Supply': res.val['Total Elec Supply'],
+        });
+
       }} className="basic-button">New</button>
-      <SimulationGridTable simulationGrid={simulationGridElec} />
-      <SimulationGridTable simulationGrid={simulationGridWater} />
-      <SimulationGridTable simulationGrid={simulationGridTotal} />
-            
+      <div className='table-section'>
+        Electricity supply & demand
+        <SimulationGridTable simulationGrid={simulationGridElec} />
+      </div>
+      <div className='table-section'>
+        Water supply & demand
+        <SimulationGridTable simulationGrid={simulationGridWater} />
+      </div>
+      <div className='table-section'>
+        Protein (in food) supply & demand
+        <SimulationGridTable simulationGrid={simulationGridProtein} />
+      </div>
+      <div className='table-section'>
+        Fat (in food) supply & demand
+        <SimulationGridTable simulationGrid={simulationGridFat} />
+      </div>
+      <div className='table-section'>
+        Kcal (food energy) supply & demand
+        <SimulationGridTable simulationGrid={simulationGridKcal} />
+      </div>
+      <div className='table-section'>
+        {"Supply & Demand ratios (>1 means supply > demand, <1 means supply < demand)"}
+        <SimulationGridTable simulationGrid={simulationGridTotal} />
+      </div>
+
+      <button className='submit-data' type="button" onClick={async () => {
+        const res = await createGraph([
+          simulationGridElec,
+          simulationGridWater,
+          simulationGridProtein,
+          simulationGridFat,
+          simulationGridKcal,
+          simulationGridTotal,
+        ]);
+        console.log('result:'); console.log(res);
+        
+
+      }}>Create graph</button>
+    
     </div>
 
     <div className='main-content-section-3'>
 
-      <h2 className='section-2-title'>Visualisation</h2>
+      <h2 className='section-2-title'>Visualisation (past resources)</h2>
       <h3 className='section-2-title-info'>This shows supply / demand ratios for three sample countries: the US, the UK and Canada</h3>
+      <h4 className='section-2-title-info'>This data is pregenerated from fetched data</h4>
 
     <div className='image-text-fields'>
 
@@ -243,6 +332,35 @@ function App() {
     </div>
       
     
+
+    </div>
+
+    <div className='main-content-section-4'>
+      <h2 className='section-2-title'>Visualisation (data from simulation)</h2>
+      <h3 className='section-2-title-info'>This shows supply / demand ratios for three sample countries: the US, the UK and Canada</h3>
+      <h4 className='section-2-title-info'>This data comes from the simulated future supply & demand values (see above)</h4>
+
+      <div className='image-text-fields'>
+
+        {rawRatiosImg && combinedRatiosImg ? (
+          <>
+            <div className='data-img'>
+          <div className='image-text'>This displays resource supply / demand ratios, meaning the total supply / total demand for a specific resource.</div>
+          <img src={rawRatiosImg} alt="rawratiosim" />
+        </div>
+
+        <div className='data-img'>
+          <div className='image-text'>This displays resource supply / demand ratios, meaning the total supply / total demand for a specific resource.</div>
+          <img src={combinedRatiosImg} alt="rawratiosim" />
+        </div>
+          </>
+        ) : (
+          <div className='no-data-yet-text'>Press the 'Generate Graph' button for data plotting</div>
+        )}
+
+        
+
+      </div>
 
     </div>
 

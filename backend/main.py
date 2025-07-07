@@ -3,6 +3,7 @@ from fastapi.middleware.cors import CORSMiddleware
 from pydantic import BaseModel
 import pandas as pd
 import numpy as np
+import matplotlib.pyplot as plt
 
 population_US = 340_000_000
 population_UK = 68_000_000
@@ -49,6 +50,9 @@ def newvalues():
     can_elec_demand = []
     can_elec_supply = []
 
+    total_elec_demand = []
+    total_elec_supply = []
+
     for _ in range(6):
         us_elec_demand.append(np.random.normal(
             us_elec_demand[-1] if us_elec_demand else us_demand_base,
@@ -74,8 +78,8 @@ def newvalues():
             can_elec_supply[-1] if can_elec_supply else can_supply_base,
             500
         ))
-
-    
+        total_elec_demand.append(us_elec_demand[-1] + uk_elec_demand[-1] + can_elec_demand[-1])
+        total_elec_supply.append(us_elec_supply[-1] + uk_elec_supply[-1] + can_elec_supply[-1])
 
     return {
         'US Elec Demand': us_elec_demand,
@@ -84,5 +88,15 @@ def newvalues():
         'UK Elec Supply': uk_elec_supply,
         'CAN Elec Demand': can_elec_demand,
         'CAN Elec Supply': can_elec_supply,
+        'Total Elec Demand': total_elec_demand,
+        'Total Elec Supply': total_elec_supply
     }
 
+
+class Generate(BaseModel):
+    values: list
+
+@app.post("/generate")
+def generate(query: Generate):
+    values = query.values
+    return {'result': values}
