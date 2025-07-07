@@ -259,14 +259,14 @@ function App() {
         console.log('result:'); console.log(res);
         setSimulationGridElec({
           'Year': range(2024, 2029),
-          'US Electricity Demand': res.val['US Elec Demand'],
-          'US Electricity Supply': res.val['US Elec Supply'],
-          'UK Electricity Demand': res.val['UK Elec Demand'],
-          'UK Electricity Supply': res.val['UK Elec Supply'],
-          'CAN Electricity Demand': res.val['CAN Elec Demand'],
-          'CAN Electricity Supply': res.val['CAN Elec Supply'],
-          'Total Electricity Demand': res.val['Total Elec Demand'],
-          'Total Electricity Supply': res.val['Total Elec Supply'],
+          'US Electricity Demand': res.val['Electricity']['US Elec Demand'],
+          'US Electricity Supply': res.val['Electricity']['US Elec Supply'],
+          'UK Electricity Demand': res.val['Electricity']['UK Elec Demand'],
+          'UK Electricity Supply': res.val['Electricity']['UK Elec Supply'],
+          'CAN Electricity Demand': res.val['Electricity']['CAN Elec Demand'],
+          'CAN Electricity Supply': res.val['Electricity']['CAN Elec Supply'],
+          'Total Electricity Demand': res.val['Electricity']['Total Elec Demand'],
+          'Total Electricity Supply': res.val['Electricity']['Total Elec Supply'],
         });
 
       }} className="basic-button">New</button>
@@ -305,7 +305,7 @@ function App() {
           simulationGridTotal,
         ]);
         console.log('result:'); console.log(res);
-        //setRawRatiosImg(res.val.image);
+        setRawRatiosImg(res.val.image1);
 
 
       }}>Create graph</button>
