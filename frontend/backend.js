@@ -99,8 +99,8 @@ export async function getBalances() {
 }
 
 
-//const pythonBackend = "https://basic-needs-unit-token-zc3p.vercel.app/";
-const pythonBackend = "http://127.0.0.1:8000"
+const pythonBackend = "https://basic-needs-unit-token-zc3p.vercel.app";
+//const pythonBackend = "http://127.0.0.1:8000"
 
 export async function changeSimulationParams() {
   try {
@@ -108,7 +108,7 @@ export async function changeSimulationParams() {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
   }
-  const response = await fetch(`${pythonBackend}/newvalues`,
+  const response = await fetch(`${pythonBackend}/newvalues/`,
     params
   )
   if (response.status === 200) {
