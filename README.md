@@ -11,13 +11,13 @@ The data was fetched from https://data.worldbank.org/ and https://www.worldwater
 I have experimented with CPI data before, but figured that this method is not entirely independent from any form of fiat currency, since inflation itself gets measured in it. However, adding CPI data into the mix might be an idea for diversification of the derivation of "value".
 In the future, it might be an idea to also throw in other sources of "value" in the mix, such as stock market indices, but this is just an idea.
 
-This repository serves to create a demo implementation / visualisation for this project.
-This project is obviously not finished and lots more improvements / refinements are needed.
+This repository serves to create a demo implementation / visualisation for the project.
+The contract has been deployed to Sepolia as well as 5 demo accounts, for the demo prototype.
 
 Roadmap:
-Use a trading pool (like Uniswap) so people could exchange other currencies (like ETH) in exchange for BNU Token. (Currently it uses the contract itself as a pool (for the demo)).
-Use L2-technology to enhance cheap and high-speed transactions.
-Use ZK-proofs to ensure data transparency and trustlessness
-Implementing oracle implementations to provide real-time resource supply / demand data
+-Use a trading pool (like Uniswap) so people could exchange other currencies (like ETH) in exchange for BNU Token. (Currently it uses the contract itself as a pool (for the demo)).
+-Use L2-technology to enhance cheap and high-speed transactions.
+-Use ZK-proofs to ensure data transparency and trustlessness
+-Implementing oracle implementations to provide real-time resource supply / demand data
 
 Frontend demo application available at https://basic-needs-unit-token.vercel.app/.
