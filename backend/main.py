@@ -70,9 +70,9 @@ def protein():
     df.index = df.index.map(lambda x: x + ' Supply')
     df = pd.concat([df, pd.DataFrame(
         np.array([
-            random_array(us_mean, us_mean*0.1, 10, us_mean*0.1),
-            random_array(uk_mean, uk_mean*0.1, 10, us_mean*0.1),
-            random_array(can_mean, can_mean*0.1, 10, us_mean*0.1)
+            random_array(us_mean, us_mean*0.1, 10),
+            random_array(uk_mean, uk_mean*0.1, 10),
+            random_array(can_mean, can_mean*0.1, 10)
         ]),
         index=[
             'United States of America Supply',
@@ -84,9 +84,9 @@ def protein():
 
     df = pd.concat([df, pd.DataFrame(
         np.array([
-            random_array(demand_value, demand_value*0.1, 24, demand_value*0.1),
-            random_array(demand_value, demand_value*0.1, 24, demand_value*0.1),
-            random_array(demand_value, demand_value*0.1, 24, demand_value*0.1)
+            random_array(demand_value, demand_value*0.1, 24),
+            random_array(demand_value, demand_value*0.1, 24),
+            random_array(demand_value, demand_value*0.1, 24)
         ]),
         index=[
             'United States of America Demand',
@@ -132,12 +132,12 @@ def water():
     can_ref_s = df.loc['Canada supply', [str(s) for s in range(2010, 2022)]].mean()
     df = pd.concat([df, pd.DataFrame(
         np.array([
-            random_array(us_ref_d, us_ref_d*0.1, 12, us_ref_d*0.1),
-            random_array(uk_ref_d, uk_ref_d*0.1, 12, uk_ref_d*0.1),
-            random_array(can_ref_d, can_ref_d*0.1, 12, can_ref_d*0.1),
-            random_array(us_ref_s, us_ref_s*0.1, 12, us_ref_s*0.1),
-            random_array(uk_ref_s, uk_ref_s*0.1, 12, uk_ref_s*0.1),
-            random_array(can_ref_s, can_ref_s*0.1, 12, can_ref_s*0.1)
+            random_array(us_ref_d, us_ref_d*0.1, 12),
+            random_array(uk_ref_d, uk_ref_d*0.1, 12),
+            random_array(can_ref_d, can_ref_d*0.1, 12),
+            random_array(us_ref_s, us_ref_s*0.1, 12),
+            random_array(uk_ref_s, uk_ref_s*0.1, 12),
+            random_array(can_ref_s, can_ref_s*0.1, 12)
         ]),
         index=['United States demand', 'United Kingdom demand', 'Canada demand',
                'United States supply', 'United Kingdom supply', 'Canada supply'],
@@ -162,9 +162,9 @@ def elec():
     can_ref = demand.loc['Canada', [str(s) for s in range(2010, 2024)]].mean()
     demand = pd.concat([demand, pd.DataFrame(
         np.array([
-            random_array(us_ref, us_ref*0.1, 10, us_ref*0.1),
-            random_array(uk_ref, uk_ref*0.1, 10, uk_ref*0.1),
-            random_array(can_ref, can_ref*0.1, 10, can_ref*0.1)
+            random_array(us_ref, us_ref*0.1, 10),
+            random_array(uk_ref, uk_ref*0.1, 10),
+            random_array(can_ref, can_ref*0.1, 10)
         ]),
         index=['United States', 'United Kingdom', 'Canada'],
         columns=[str(s) for s in range(2024, 2034)]
@@ -189,9 +189,9 @@ def elec():
     
     supply = pd.concat([supply, pd.DataFrame(
         np.array([
-            random_array(us_ref, us_ref*0.1, 9, us_ref*0.1),
-            random_array(uk_ref, uk_ref*0.1, 9, uk_ref*0.1),
-            random_array(can_ref, can_ref*0.1, 9, can_ref*0.1)
+            random_array(us_ref, us_ref*0.1, 9),
+            random_array(uk_ref, uk_ref*0.1, 9),
+            random_array(can_ref, can_ref*0.1, 9)
         ]),
         index=['United States', 'United Kingdom', 'Canada'],
         columns=[str(s) for s in range(2025, 2034)]
