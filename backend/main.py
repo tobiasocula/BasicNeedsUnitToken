@@ -1,3 +1,6 @@
+import os
+os.environ['MPLCONFIGDIR'] = '/tmp'
+
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 from pydantic import BaseModel
@@ -8,7 +11,7 @@ import io
 import base64
 import sys
 import matplotlib
-matplotlib.use('Agg')  # Use non-GUI backend
+matplotlib.use('Agg') # non gui backend
 
 population_US = 340_000_000
 population_UK = 68_000_000
@@ -18,7 +21,6 @@ total_population = population_US + population_UK + population_CAN
 
 app = FastAPI()
 
-# Allow frontend to access API (adjust origins as needed)
 app.add_middleware(
     CORSMiddleware,
     allow_origins=["*"],
