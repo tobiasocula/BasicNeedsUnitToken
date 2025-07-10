@@ -79,32 +79,32 @@ def protein():
     
     df = pd.concat([df, pd.DataFrame(
         np.array([
-            random_array(us_ref, us_ref*0.05, 17),
-            random_array(uk_ref, uk_ref*0.05, 17),
-            random_array(can_ref, can_ref*0.05, 17)
+            random_array(us_ref, us_ref*0.05, 11),
+            random_array(uk_ref, uk_ref*0.05, 11),
+            random_array(can_ref, can_ref*0.05, 11)
         ]),
         index=[
             'United States of America Supply',
             'United Kingdom of Great Britain and Northern Ireland Supply',
             'Canada Supply'
         ],
-        columns=range(2023, 2040)
+        columns=range(2023, 2034)
     )], axis=1)
 
     
 
     df = pd.concat([df, pd.DataFrame(
         np.array([
-            random_array(demand_value, demand_value*0.05, 30),
-            random_array(demand_value, demand_value*0.05, 30),
-            random_array(demand_value, demand_value*0.05, 30)
+            random_array(demand_value, demand_value*0.05, 24),
+            random_array(demand_value, demand_value*0.05, 24),
+            random_array(demand_value, demand_value*0.05, 24)
         ]),
         index=[
             'United States of America Demand',
             'United Kingdom of Great Britain and Northern Ireland Demand',
             'Canada Demand'
         ],
-        columns=range(2010, 2040)
+        columns=range(2010, 2034)
     )])
     df.to_csv('tbd.csv')
     df.loc['Canada Supply'] *= population_CAN * 365
@@ -151,16 +151,16 @@ def water():
     can_ref_s = df.loc['Canada supply', '2021']
     df = pd.concat([df, pd.DataFrame(
         np.array([
-            random_array(us_ref_d, us_ref_d*0.05, 18),
-            random_array(uk_ref_d, uk_ref_d*0.05, 18),
-            random_array(can_ref_d, can_ref_d*0.05, 18),
-            random_array(us_ref_s, us_ref_s*0.05, 18),
-            random_array(uk_ref_s, uk_ref_s*0.05, 18),
-            random_array(can_ref_s, can_ref_s*0.05, 18)
+            random_array(us_ref_d, us_ref_d*0.05, 12),
+            random_array(uk_ref_d, uk_ref_d*0.05, 12),
+            random_array(can_ref_d, can_ref_d*0.05, 12),
+            random_array(us_ref_s, us_ref_s*0.05, 12),
+            random_array(uk_ref_s, uk_ref_s*0.05, 12),
+            random_array(can_ref_s, can_ref_s*0.05, 12)
         ]),
         index=['United States demand', 'United Kingdom demand', 'Canada demand',
                'United States supply', 'United Kingdom supply', 'Canada supply'],
-        columns=[str(s) for s in range(2022, 2040)]
+        columns=[str(s) for s in range(2022, 2034)]
     )], axis=1)
 
     d = df.loc[['United States demand', 'Canada demand', 'United Kingdom demand']].sum(axis=0)
@@ -185,12 +185,12 @@ def elec():
     can_ref = demand.loc['Canada', '2023']
     demand = pd.concat([demand, pd.DataFrame(
         np.array([
-            random_array(us_ref, us_ref*0.05, 16),
-            random_array(uk_ref, uk_ref*0.05, 16),
-            random_array(can_ref, can_ref*0.05, 16)
+            random_array(us_ref, us_ref*0.05, 10),
+            random_array(uk_ref, uk_ref*0.05, 10),
+            random_array(can_ref, can_ref*0.05, 10)
         ]),
         index=['United States', 'United Kingdom', 'Canada'],
-        columns=[str(s) for s in range(2024, 2040)]
+        columns=[str(s) for s in range(2024, 2034)]
     )], axis=1).drop(
         ['Indicator Name', 'Country Code', 'Indicator Code'] + [str(k) for k in range(1960, 1985)],
         axis=1)
@@ -212,12 +212,12 @@ def elec():
     
     supply = pd.concat([supply, pd.DataFrame(
         np.array([
-            random_array(us_ref, us_ref*0.05, 15),
-            random_array(uk_ref, uk_ref*0.05, 15),
-            random_array(can_ref, can_ref*0.05, 15)
+            random_array(us_ref, us_ref*0.05, 9),
+            random_array(uk_ref, uk_ref*0.05, 9),
+            random_array(can_ref, can_ref*0.05, 9)
         ]),
         index=['United States', 'United Kingdom', 'Canada'],
-        columns=[str(s) for s in range(2025, 2040)]
+        columns=[str(s) for s in range(2025, 2034)]
     )], axis=1)
     supply.index = supply.index.map(lambda x: x + ' Supply')
     
@@ -250,9 +250,9 @@ def newvalues():
     protein_ref_ratio = np.mean([protein_df.loc['Ratio'][str(k)] for k in range(2010, 2020)])
 
     fig, ax = plt.subplots()
-    ax.plot(range(2010, 2040), elec_df.loc['Ratio'], label="Electricity")
-    ax.plot(range(2010, 2040), water_df.loc['Ratio'], label="Water")
-    ax.plot(range(2010, 2040), protein_df.loc['Ratio'], label="Protein")
+    ax.plot(range(2010, 2034), elec_df.loc['Ratio'], label="Electricity")
+    ax.plot(range(2010, 2034), water_df.loc['Ratio'], label="Water")
+    ax.plot(range(2010, 2034), protein_df.loc['Ratio'], label="Protein")
     ax.legend()
     ax.set_xlabel("Year")
     ax.set_ylabel("Supply / Demand Ratio")
@@ -266,10 +266,10 @@ def newvalues():
     e_ratio = elec_df.loc['Ratio'] / elec_ref_ratio
     w_ratio = water_df.loc['Ratio'] / water_ref_ratio
     p_ratio = protein_df.loc['Ratio'] / protein_ref_ratio
-    ax.plot(range(2010, 2040), e_ratio, label="Electricity", linestyle="dotted")
-    ax.plot(range(2010, 2040), w_ratio, label="Water", linestyle="dotted")
-    ax.plot(range(2010, 2040), p_ratio, label="Protein", linestyle="dotted")
-    ax.plot(range(2010, 2040), (
+    ax.plot(range(2010, 2034), e_ratio, label="Electricity")
+    ax.plot(range(2010, 2034), w_ratio, label="Water")
+    ax.plot(range(2010, 2034), p_ratio, label="Protein")
+    ax.plot(range(2010, 2034), (
         e_ratio + w_ratio + p_ratio
     ) / 3, label="Total supply normalized")
     ax.legend()

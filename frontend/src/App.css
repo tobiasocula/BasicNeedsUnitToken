@@ -17,6 +17,10 @@
   padding: 10px;
 }
 
+.data-img {
+  display: flex;
+}
+
 .account-section {
   display: flex;
   flex-direction: column;
