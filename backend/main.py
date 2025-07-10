@@ -218,6 +218,7 @@ def elec():
 
 @app.post("/newvalues")
 def newvalues():
+    return {'val': "hi!"}
     elec_df = elec()
     water_df = water()
     protein_df = protein()

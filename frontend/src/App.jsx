@@ -195,8 +195,8 @@ function App() {
         if (res.status) {
           setRawRatiosImg(res.val.image1);
           setCombinedRatiosImg(res.val.image2);
-          setLoadingSimulation(false);
         }
+        setLoadingSimulation(false);
       }} className="basic-button2">Generate graph</button>
       {loadingSimulation && <div className='loading-text'>Loading data and graph...</div>}
     
