@@ -38,7 +38,7 @@ population_US = 340_000_000
 population_UK = 68_000_000
 population_CAN = 40_000_000
 
-total_population = population_US + population_UK + population_CAN
+# total_population = population_US + population_UK + population_CAN
 
 
 
@@ -70,9 +70,9 @@ def protein():
     df.index = df.index.map(lambda x: x + ' Supply')
     df = pd.concat([df, pd.DataFrame(
         np.array([
-            random_array(us_mean, us_mean*0.1, 10),
-            random_array(uk_mean, uk_mean*0.1, 10),
-            random_array(can_mean, can_mean*0.1, 10)
+            random_array(us_mean, us_mean*0.05, 10),
+            random_array(uk_mean, uk_mean*0.05, 10),
+            random_array(can_mean, can_mean*0.05, 10)
         ]),
         index=[
             'United States of America Supply',
@@ -84,9 +84,9 @@ def protein():
 
     df = pd.concat([df, pd.DataFrame(
         np.array([
-            random_array(demand_value, demand_value*0.1, 24),
-            random_array(demand_value, demand_value*0.1, 24),
-            random_array(demand_value, demand_value*0.1, 24)
+            random_array(demand_value, demand_value*0.05, 24),
+            random_array(demand_value, demand_value*0.05, 24),
+            random_array(demand_value, demand_value*0.05, 24)
         ]),
         index=[
             'United States of America Demand',
@@ -108,6 +108,7 @@ def protein():
     df.loc['Total Demand'] = d
 
     df.loc['Ratio'] = df.loc['Total Supply'] / df.loc['Total Demand']
+    df.to_csv('protein_final.csv') # for debugging
     return df
     
 
@@ -132,12 +133,12 @@ def water():
     can_ref_s = df.loc['Canada supply', [str(s) for s in range(2010, 2022)]].mean()
     df = pd.concat([df, pd.DataFrame(
         np.array([
-            random_array(us_ref_d, us_ref_d*0.1, 12),
-            random_array(uk_ref_d, uk_ref_d*0.1, 12),
-            random_array(can_ref_d, can_ref_d*0.1, 12),
-            random_array(us_ref_s, us_ref_s*0.1, 12),
-            random_array(uk_ref_s, uk_ref_s*0.1, 12),
-            random_array(can_ref_s, can_ref_s*0.1, 12)
+            random_array(us_ref_d, us_ref_d*0.05, 12),
+            random_array(uk_ref_d, uk_ref_d*0.05, 12),
+            random_array(can_ref_d, can_ref_d*0.05, 12),
+            random_array(us_ref_s, us_ref_s*0.05, 12),
+            random_array(uk_ref_s, uk_ref_s*0.05, 12),
+            random_array(can_ref_s, can_ref_s*0.05, 12)
         ]),
         index=['United States demand', 'United Kingdom demand', 'Canada demand',
                'United States supply', 'United Kingdom supply', 'Canada supply'],
@@ -149,6 +150,7 @@ def water():
     df.loc['Total Supply'] = s
     df.loc['Total Demand'] = d
     df.loc['Ratio'] = df.loc['Total Supply'] / df.loc['Total Demand']
+    df.to_csv('water_final.csv') # for debugging
     return df
 
 
@@ -162,9 +164,9 @@ def elec():
     can_ref = demand.loc['Canada', [str(s) for s in range(2010, 2024)]].mean()
     demand = pd.concat([demand, pd.DataFrame(
         np.array([
-            random_array(us_ref, us_ref*0.1, 10),
-            random_array(uk_ref, uk_ref*0.1, 10),
-            random_array(can_ref, can_ref*0.1, 10)
+            random_array(us_ref, us_ref*0.05, 10),
+            random_array(uk_ref, uk_ref*0.05, 10),
+            random_array(can_ref, can_ref*0.05, 10)
         ]),
         index=['United States', 'United Kingdom', 'Canada'],
         columns=[str(s) for s in range(2024, 2034)]
@@ -189,19 +191,16 @@ def elec():
     
     supply = pd.concat([supply, pd.DataFrame(
         np.array([
-            random_array(us_ref, us_ref*0.1, 9),
-            random_array(uk_ref, uk_ref*0.1, 9),
-            random_array(can_ref, can_ref*0.1, 9)
+            random_array(us_ref, us_ref*0.05, 9),
+            random_array(uk_ref, uk_ref*0.05, 9),
+            random_array(can_ref, can_ref*0.05, 9)
         ]),
         index=['United States', 'United Kingdom', 'Canada'],
         columns=[str(s) for s in range(2025, 2034)]
     )], axis=1)
     supply.index = supply.index.map(lambda x: x + ' Supply')
     
-
     supply.columns = set(str(k) for k in supply.columns)
-
-    demand_cols = set(demand.columns)
 
     supply.columns = [str(col) for col in supply.columns]
     demand.columns = [str(col) for col in demand.columns]
@@ -213,12 +212,13 @@ def elec():
     df.loc['Total Demand'] = d
 
     df.loc['Ratio'] = df.loc['Total Supply'] / df.loc['Total Demand']
-    return df.drop([str(k) for k in range(1985, 2010)], axis=1)
+    df = df.drop([str(k) for k in range(1985, 2010)], axis=1)
+    df.to_csv('elec_final.csv') # for debugging
+    return df
     
 
 @app.post("/newvalues")
 def newvalues():
-    #return {'val': "hi!"}
     elec_df = elec()
     water_df = water()
     protein_df = protein()

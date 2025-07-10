@@ -99,7 +99,8 @@ export async function getBalances() {
 }
 
 
-const pythonBackend = "https://basicneedsunittoken.onrender.com";
+//const pythonBackend = "https://basicneedsunittoken.onrender.com";
+const pythonBackend = "https://basic-needs-unit-token-zc3p.vercel.app";
 //const pythonBackend = "http://127.0.0.1:8000"
 
 export async function changeSimulationParams() {
