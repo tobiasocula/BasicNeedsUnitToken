@@ -23,16 +23,16 @@ app.add_middleware(
     allow_headers=["*"],
 )
 
-@app.options("/newvalues")
-def preflight_newvalues():
-    return JSONResponse(
-        content={},
-        headers={
-            "Access-Control-Allow-Origin": "*",
-            "Access-Control-Allow-Methods": "POST, OPTIONS",
-            "Access-Control-Allow-Headers": "*",
-        },
-    )
+# @app.options("/newvalues")
+# def preflight_newvalues():
+#     return JSONResponse(
+#         content={},
+#         headers={
+#             "Access-Control-Allow-Origin": "*",
+#             "Access-Control-Allow-Methods": "POST, OPTIONS",
+#             "Access-Control-Allow-Headers": "*",
+#         },
+#     )
 
 population_US = 340_000_000
 population_UK = 68_000_000
@@ -218,7 +218,7 @@ def elec():
 
 @app.post("/newvalues")
 def newvalues():
-    return {'val': "hi!"}
+    #return {'val': "hi!"}
     elec_df = elec()
     water_df = water()
     protein_df = protein()
@@ -260,14 +260,14 @@ def newvalues():
     plt.close(fig)
     base64_img2 = base64.b64encode(buf.getvalue()).decode('utf-8')
 
-    # return {'image1': f"data:image/png;base64,{base64_img1}",
-    #         'image2': f"data:image/png;base64,{base64_img2}"}
-    return JSONResponse(
-        content={
-            'image1': f"data:image/png;base64,{base64_img1}",
-            'image2': f"data:image/png;base64,{base64_img2}",
-        },
-        headers={
-            "Access-Control-Allow-Origin": "*"
-        },
-    )
+    return {'image1': f"data:image/png;base64,{base64_img1}",
+            'image2': f"data:image/png;base64,{base64_img2}"}
+    # return JSONResponse(
+    #     content={
+    #         'image1': f"data:image/png;base64,{base64_img1}",
+    #         'image2': f"data:image/png;base64,{base64_img2}",
+    #     },
+    #     headers={
+    #         "Access-Control-Allow-Origin": "*"
+    #     },
+    # )
