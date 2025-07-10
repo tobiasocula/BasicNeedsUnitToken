@@ -2,22 +2,17 @@ import os
 os.environ['MPLCONFIGDIR'] = '/tmp'
 
 from fastapi import FastAPI
+from fastapi.responses import JSONResponse
 from fastapi.middleware.cors import CORSMiddleware
-from pydantic import BaseModel
+#from pydantic import BaseModel
 import pandas as pd
 import numpy as np
 import matplotlib.pyplot as plt
 import io
 import base64
-import sys
+#import sys
 import matplotlib
 matplotlib.use('Agg') # non gui backend
-
-population_US = 340_000_000
-population_UK = 68_000_000
-population_CAN = 40_000_000
-
-total_population = population_US + population_UK + population_CAN
 
 app = FastAPI()
 
@@ -27,6 +22,27 @@ app.add_middleware(
     allow_methods=["*"],
     allow_headers=["*"],
 )
+
+@app.options("/newvalues")
+def preflight_newvalues():
+    return JSONResponse(
+        content={},
+        headers={
+            "Access-Control-Allow-Origin": "*",
+            "Access-Control-Allow-Methods": "POST, OPTIONS",
+            "Access-Control-Allow-Headers": "*",
+        },
+    )
+
+population_US = 340_000_000
+population_UK = 68_000_000
+population_CAN = 40_000_000
+
+total_population = population_US + population_UK + population_CAN
+
+
+
+
 
 def random_array(mean, std, n):
     result = []
@@ -243,5 +259,14 @@ def newvalues():
     plt.close(fig)
     base64_img2 = base64.b64encode(buf.getvalue()).decode('utf-8')
 
-    return {'image1': f"data:image/png;base64,{base64_img1}",
-            'image2': f"data:image/png;base64,{base64_img2}"}
+    # return {'image1': f"data:image/png;base64,{base64_img1}",
+    #         'image2': f"data:image/png;base64,{base64_img2}"}
+    return JSONResponse(
+        content={
+            'image1': f"data:image/png;base64,{base64_img1}",
+            'image2': f"data:image/png;base64,{base64_img2}",
+        },
+        headers={
+            "Access-Control-Allow-Origin": "*"
+        },
+    )
