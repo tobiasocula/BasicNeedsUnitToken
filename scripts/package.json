@@ -2,7 +2,7 @@
   "name": "scripts",
   "version": "1.0.0",
   "main": "creating_demo_accounts.js",
-  "type": "module",
+  "type": "commonjs",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
   },
@@ -11,6 +11,6 @@
   "license": "ISC",
   "description": "",
   "dependencies": {
-    "ethers": "5.7"
+    "ethers": "^6.15.0"
   }
 }

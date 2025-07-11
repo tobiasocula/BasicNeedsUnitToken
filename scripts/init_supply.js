@@ -3,7 +3,7 @@ import {ethers} from "ethers";
 import dotenv from "dotenv";
 dotenv.config();
 
-const tokenAddress = "0xf7F47D4E7D1568c0863065bd07f7C197B4eD0Cca";
+const tokenAddress = "0xE8a23AB5b39F5FD1B00912B36c43fAfFD148e593"; // proxy
 
 const accounts = [
     "0x9966E7692817B333165c93111640Fe4E20988399",
@@ -13,7 +13,8 @@ const accounts = [
     "0x95f3C09092bD7831a839Ea3FD0558cEFbDc50416"
 ];
 
-import artifact from './contract.json' with { type: "json" };
+const artifact = require('./contract.json'); // storing abi for latest deployment of proxy
+
 
 async function initAirdrop() {
 try {

@@ -10,11 +10,23 @@ import "@openzeppelin/contracts-upgradeable/access/OwnableUpgradeable.sol";
 contract BasicNeedsUnitToken is ERC20Upgradeable, UUPSUpgradeable, OwnableUpgradeable {
     
     uint ownBalance;
-    enum Resources{ Kcal, Protein, Fat, Electricity, Water, Total }
-    mapping(Resources => uint) public resourceRatios;
+    // NOT USED ANYMORE:
+    //enum Resources{ Kcal, Protein, Fat, Electricity, Water, Total }
+    //mapping(Resources => uint) public resourceRatios;
 
-    function updateResourceData(uint newRatio, Resources resource) external onlyOwner {
-        resourceRatios[resource] = newRatio;
+    //function updateResourceData(uint newRatio, Resources resource) external onlyOwner {
+        //resourceRatios[resource] = newRatio;
+    //}
+
+    uint public latestElecDemand; //for now: the average of demand in USA + CAN + UK
+    uint public latestElecSupply; //for now: the average of supply in USA + CAN + UK
+    uint public latestUpdateTime;
+    uint public latestDataTime;
+
+    function provideElecData(uint _demand, uint _supply) public {
+        latestElecDemand = _demand;
+        latestElecSupply = _supply;
+        latestDataTime = block.timestamp;
     }
 
     function mintTo(address to, uint256 amount) external onlyOwner {
@@ -31,6 +43,7 @@ contract BasicNeedsUnitToken is ERC20Upgradeable, UUPSUpgradeable, OwnableUpgrad
         __Ownable_init(msg.sender);
         _mint(msg.sender, 1000 * 1e18);
         ownBalance = 0;
+        latestUpdateTime = block.timestamp;
     }
 
     // allow upgrades
